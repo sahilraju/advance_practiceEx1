@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.mphasis.dto.User;
 import com.mphasis.exception.BusinessException;
 
 public class UserDao { 
@@ -12,16 +14,16 @@ public class UserDao {
 	private PreparedStatement prepare;
 	private ResultSet rSet;
 
-	public boolean verifyUserCredentails(String userName, String password) throws BusinessException {
+	public boolean verifyUserCredentails(User user) throws BusinessException {
 
-		connection = DBUtil.establishConnection();
+		connection = DBUtil.establishConnection(); 
 
 		try {
   
 			prepare = connection.prepareStatement("Select * FROM user WHERE username = ? AND password = ?");
 
-			prepare.setString(1, userName);
-			prepare.setString(2, password);
+			prepare.setString(1, user.getUserName());
+			prepare.setString(2, user.getPassword());
 
 			rSet = prepare.executeQuery();
 

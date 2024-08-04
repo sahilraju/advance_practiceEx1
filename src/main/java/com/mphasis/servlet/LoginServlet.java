@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.mphasis.dao.UserDao;
+import com.mphasis.dto.User;
 import com.mphasis.exception.BusinessException;
 
 @WebServlet("/login")
@@ -27,23 +28,34 @@ public class LoginServlet extends HttpServlet {
 
 		RequestDispatcher dispatcher = null;
 
-		if (!LoginBo.validateUserName(username) || !LoginBo.validatePassword(password)) {
+		try {
 
-			System.out.println("Invalid Credentails");
-//			dispatcher = request.getRequestDispatcher("login.html");
-//			dispatcher.forward(request, response);
+			if (LoginBo.validateUserName(username) == false || LoginBo.validatePassword(password) == false) 
+				throw new BusinessException("Invalid Credentails"); 
+			
+		} catch (BusinessException e) {
+			request.setAttribute("errorMessage", "Invalid Credentails");
+			dispatcher = request.getRequestDispatcher("login.jsp");
+			dispatcher.forward(request, response);
+			return; 
 		}
 
-//		dispatcher = request.getRequestDispatcher("welcome.html");
-//		dispatcher.forward(request, response); 
+		User user = new User();
+		user.setUserName(username);
+		user.setPassword(password);
+
 		System.out.println("verified");
 
 		userDao = new UserDao();
 		try {
-			userDao.verifyUserCredentails(username, password);  
+			userDao.verifyUserCredentails(user);
 			System.out.println("credentials verified from database");
-		} catch (BusinessException e) { 
-			System.out.println(e.getMessage());
+			response.sendRedirect("welcome.html");
+		} catch (BusinessException e) {
+			request.setAttribute("errorMessage", "Invalid Credentails");
+			dispatcher = request.getRequestDispatcher("login.jsp");
+			dispatcher.forward(request, response);
+			return; 
 		}
 
 	}

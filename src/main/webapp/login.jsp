@@ -2,11 +2,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Login Page</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
-<body>
+ <body>
 
-    <form action="login"> 
+    <form action="login" >  
          <label for="username">User Name: </label> <br>
          <input type="text" id="username" name="username" required> <br>
          
@@ -16,6 +21,16 @@
          <input type="submit" value="Submit">
          <input type="reset" value="Reset"> 
     </form>
+    
+    <!-- Error message display -->  
+    <div class="error">
+        <% 
+            String errorMessage = (String) request.getAttribute("errorMessage");
+            if (errorMessage != null) {
+               out.print(errorMessage); 
+            }
+        %> 
+    </div>
 
-</body>
+ </body>
 </html>

@@ -30,7 +30,7 @@ public class LoginBo {
 	public static void main(String[] args) {
 
 		System.out.println(validateUserName("sahilraju2001@gmail.com"));
-		System.out.println(validatePassword("Nalifenaestem#aug6")); 
+		System.out.println(validatePassword("Nalifenaestem#aug6"));  
 
 	}
 
